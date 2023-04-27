@@ -1,30 +1,27 @@
-import { useEffect, useState } from "react";
+
 import Form from "./Components/Form";
+import Table from "./Components/Table";
+import { useEffect, useState } from "react";
 
 const App = () => {
-  const [data, setData] = useState({
-    description: [],
-    amount: [],
-  });
-  const getData = data => {
-    setData({
-      ...data,
-      description: [...data.description],
-      amount: [...data.amount],
-    });
+  const [data, setData] = useState([]);
+  const [totalAmount, setTotalAmount] = useState(0);
+  const getData = inputData => {
+    setData(inputData);
   };
-
-  const desc = data.description.map(desc => <p key={desc}>{desc}</p>);
-  const amt = data.amount.map(amt => <p key={amt}>{amt}</p>);
+  const sumTotal = data.reduce(
+    (accumulator, current) => parseInt(accumulator) + parseInt(current.Amount),
+    0,
+  );
 
   useEffect(() => {
-    console.log(data);
+    setTotalAmount(sumTotal);
   }, [data]);
 
   return (
     <div className="p-3">
       <Form getData={getData} />
-      {desc} {amt}
+      <Table data={data} totalAmount={totalAmount} /> 
     </div>
   );
 };
