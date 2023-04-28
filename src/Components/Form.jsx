@@ -7,21 +7,29 @@ import {
 } from "../Styles/StyleClassNames";
 import ErrorMessage from "../Utilities/ErrorMessage";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import Button from "./Button";
+
 
 const Form = ({ getData }) => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm();
   const [data, setData] = useState([]);
 
+
   const submitHandler = inputData => {
     setData([...data, inputData]);
-    getData(data);
+    reset()
   };
+
+  useEffect(() => {
+    getData(data);
+  }, [data]);
 
   return (
     <form className={formClassNames} onSubmit={handleSubmit(submitHandler)}>
@@ -49,7 +57,7 @@ const Form = ({ getData }) => {
         />
         {ErrorMessage(errors?.Amount?.type)}
       </div>
-      <button className={secondaryButtonClassNames}>Submit</button>
+      <Button className={secondaryButtonClassNames}>Submit</Button>
     </form>
   );
 };
